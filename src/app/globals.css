@@ -98,7 +98,47 @@ overflow: hidden;
   height: 90vh;
   overflow: hidden;
 }
+.purplepatch{
+  background-color: #633CFF;
+  min-height: 200px;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: 20px;
+  width: 100%;
+}
+.previews{
+  background-color: var(--background-purple);
+  color: white !important;
+}
+.devicespace{
+  width: 350px;
+  border-radius: 7px;
+  min-height: 400px;
+  box-shadow: 0px 0px 32px 0px #0000001A;
+background-color: white;
+margin: auto;
+z-index: 999999;
+margin-top: -60px;
+padding: 30px;
+display: flex;
+flex-direction: column;
+gap: 10px;
+align-items: center;
+}
+.previewbox header{
+  background-color: transparent;
+  position: sticky;
+}
 
+.previewbox{
+
+}
+
+.devicespace .socialbox{
+  width: 100%;
+  padding: 12px;
+  margin-block: 4px;
+}
 .heroflexone{
 width: 48%;
 background-color: white;
@@ -684,9 +724,14 @@ text-align: left;
 .mobile{
   display: none;
 }
+
 @media screen and (max-width:750px) {
   .profilephotoflex {
    flex-direction: column;
+  }
+
+  .purplepatch{
+    background-color: transparent;
   }
   .addnewdiv p {
     margin-top: 8px;

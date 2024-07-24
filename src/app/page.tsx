@@ -78,11 +78,13 @@ const page = () => {
     </div>
   ) : null
 ))}
-   {/* <div className="socialbox"></div>
+{ socialInputs.length <1 && (<>
+  <div className="socialbox"></div>
    <div className="socialbox"></div>
    <div className="socialbox"></div>
    <div className="socialbox"></div>
-   <div className="socialbox"></div> */}
+   <div className="socialbox"></div>
+</>) }
   </div>
 </div>
 

@@ -1,11 +1,8 @@
 'use client'
 import Layout from '@/components/Layout'
-import Topnav from '@/components/Topnav'
-import Emptystatesocials from '@/components/utility/Emptystatesocials'
-import Pageheading from '@/components/utility/Pageheading'
-import Socialinputbox from '@/components/utility/Socialinputbox'
 import React, { useState } from 'react';
 import { Github, Youtube, Linkedin, Facebook, Codepen, ChevronRight } from 'lucide-react';
+import Previewnav from '@/components/utility/Previewnav'
 
 
 const options = [
@@ -19,78 +16,32 @@ const options = [
 
 const page = () => {
 
-  const [socialInputs, setSocialInputs] = useState<{ platform: string; link: string }[]>([]);
 
-  const addInputBox = () => {
-    setSocialInputs([...socialInputs, { platform: '', link: '' }]);
-  };
 
-  const removeInputBox = (index: number) => {
-    setSocialInputs(socialInputs.filter((_, i) => i !== index));
-  };
-
-  const handlePlatformChange = (index: number, platform: string) => {
-    const newInputs = [...socialInputs];
-    newInputs[index].platform = platform;
-    setSocialInputs(newInputs);
-  };
-
-  const handleLinkChange = (index: number, link: string) => {
-    const newInputs = [...socialInputs];
-    newInputs[index].link = link;
-    newInputs[index].link = link;
-    setSocialInputs(newInputs);
-  };
-
-  const availableOptions = options.filter(
-    (option) => !socialInputs.some((input) => input.platform === option.value)
-  );
-  const selectedoptions = options.filter(
-    (option) => socialInputs.some((input) => input.platform === option.value)
-  );
-  console.log('availableoptions', selectedoptions)
-  console.table(socialInputs)
   return (
     <Layout>
-
-<div className="purplepatch"></div>
-
-<Topnav/>
-
-<div className="heroflex">
+      <div className="purplepatch">
+      <div className="previewbox">
+      <Previewnav/>
+      </div>
 
 
-<div className="heroflextwo">
-<div className="preview">
-  <div className="previewblock">
-    <div className="avatar"></div>
+</div>
+
+
+<div className="devicespace">
+<div className="avatar"></div>
    <div className="uname"></div>
    <div className="uemail"></div>
-   {socialInputs.map((input, index) => (
-  (input.platform && input.link.trim() ) ? (
-    <div className={`socialbox ${input.platform}`} key={index}>
-   <span className='aic'>     
-        {options.find(option => option.value == input.platform)?.icon}
-            <span style={{ marginLeft: 3 }}>
-               {input.platform} 
-               </span>    
-               </span>
 
-               <span style={{ marginTop: 3 }}><ChevronRight size={'14'} /></span>
-    </div>
-  ) : null
-))}
-<div className="socialbox"></div>
-   {/* 
    <div className="socialbox"></div>
    <div className="socialbox"></div>
    <div className="socialbox"></div>
-   <div className="socialbox"></div> */}
-  </div>
+   <div className="socialbox"></div>
+   <div className="socialbox"></div>
 </div>
 
-</div>
-</div>
+
 
 
 

@@ -14,6 +14,10 @@ const Topnav = () => {
   const handlehome = () => {
     router.push('/');
   };
+
+  const handlepreview = () => {
+    router.push('/preview');
+  };
   return (
 
     <header>
@@ -29,7 +33,7 @@ const Topnav = () => {
           </div>
         </div>
 
-        <div className="navlink navbtn">
+        <div className="navlink navbtn" onClick={handlepreview}>
           Preview
         </div>
     </div>
