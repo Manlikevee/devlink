@@ -52,14 +52,15 @@ const page = () => {
   console.table(socialInputs)
   return (
     <Layout>
-<div className="container">
 
+<div className="purplepatch"></div>
 
 <Topnav/>
 
 <div className="heroflex">
-<div className="heroflexone">
 
+
+<div className="heroflextwo">
 <div className="preview">
   <div className="previewblock">
     <div className="avatar"></div>
@@ -79,7 +80,8 @@ const page = () => {
     </div>
   ) : null
 ))}
-   {/* <div className="socialbox"></div>
+<div className="socialbox"></div>
+   {/* 
    <div className="socialbox"></div>
    <div className="socialbox"></div>
    <div className="socialbox"></div>
@@ -88,41 +90,9 @@ const page = () => {
 </div>
 
 </div>
-
-<div className="heroflextwo">
-
-<Pageheading title='Customize your links' subtitle='Add/edit/remove links below and then share all your profiles with the world!'/>
-
-<div className="addbtn" onClick={addInputBox}>+ Add new link</div>
-<div className="socialblock">
-
-{socialInputs.length <1 && (<Emptystatesocials/>)}
-{socialInputs.map((input, index) => (
-        <Socialinputbox
-          key={index}
-          index={index}
-          platform={input.platform}
-          link={input.link}
-          onPlatformChange={handlePlatformChange}
-          onLinkChange={handleLinkChange}
-          onRemove={removeInputBox}
-          options={availableOptions}
-        />
-      ))}
-
-
-
 </div>
 
 
-
-<div className="pagefooter">
- <button className='mybtn'>Save</button>
-</div>
-</div>
-</div>
-
-</div>
 
 
     </Layout>

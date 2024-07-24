@@ -626,7 +626,7 @@ color: var(--background-dark-gray);
   border-top: none;
   border-radius: 0 0 4px 4px;
   background-color: #fff;
-  max-height: 200px;
+  max-height: 180px;
   overflow-y: auto;
   z-index: 1;
 }

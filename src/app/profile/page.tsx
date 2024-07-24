@@ -7,6 +7,7 @@ import Socialinputbox from '@/components/utility/Socialinputbox'
 import React, { useState } from 'react';
 import { Github, Youtube, Linkedin, Facebook, Codepen, ChevronRight, ImageUp } from 'lucide-react';
 import Inputbox from '@/components/utility/Inputbox'
+import Herolayout from '@/components/Herolayout'
 
 
 const options = [
@@ -43,13 +44,8 @@ const page = () => {
   };
 
   return (
-    <Layout>
-<div className="container">
 
-
-<Topnav/>
-
-<div className="heroflex">
+<Herolayout>
 <div className="heroflexone">
 
 <div className="preview">
@@ -193,12 +189,15 @@ const page = () => {
  <button className='mybtn'>Save</button>
 </div>
 </div>
-</div>
 
-</div>
+</Herolayout>
 
 
-    </Layout>
+
+
+
+
+
 
   )
 }
