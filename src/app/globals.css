@@ -721,10 +721,61 @@ text-align: left;
 }
 }
 
+.loading-spinner {
+  border: 2px solid rgba(82, 82, 82, 0.1);
+  border-left-color: #fff;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: loading-spinner-animation 0.75s linear infinite;
+}
+.loadbtn{
+  margin-top: 5px;
+    padding: 8px;
+    border: 1px solid var(--background-purple);
+    background-color: #633CFF;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: center;
+    color: var(--background-white);
+    min-width: 120px;
+    display: flex;
+    align-self: center;
+    width: 100%;
+    justify-self: center;
+    justify-content: center;
+}
+@keyframes loading-spinner-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .mobile{
   display: none;
 }
+.loading-spinner {
+    border: 2px solid rgba(82, 82, 82, 0.1);
+    border-left-color: #fff;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    animation: loading-spinner-animation 0.75s linear infinite;
+  }
 
+
+  @keyframes loading-spinner-animation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 @media screen and (max-width:750px) {
   .profilephotoflex {
    flex-direction: column;
@@ -762,5 +813,9 @@ text-align: left;
     align-items: flex-start;
     gap: 0px;
     padding-block: 1px;
+  }
+  .authbox {
+    padding: 30px;
+    width: 93%;
   }
 }

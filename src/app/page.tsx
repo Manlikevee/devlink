@@ -2,10 +2,11 @@
 import Emptystatesocials from '@/components/utility/Emptystatesocials'
 import Pageheading from '@/components/utility/Pageheading'
 import Socialinputbox from '@/components/utility/Socialinputbox'
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Github, Youtube, Linkedin, Facebook, Codepen, ChevronRight } from 'lucide-react';
 import Herolayout from '@/components/Herolayout'
-
+import axios from 'axios';
+import { VeeContext } from "@/components/Chatcontext";
 
 const options = [
   { value: 'github', label: 'GitHub', icon: <Github size={16} /> },
@@ -17,8 +18,11 @@ const options = [
 
 
 const page = () => {
-
+  const { test, axiosInstance } = useContext(VeeContext);
   const [socialInputs, setSocialInputs] = useState<{ platform: string; link: string }[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
 
   const addInputBox = () => {
     setSocialInputs([...socialInputs, { platform: '', link: '' }]);
@@ -48,9 +52,23 @@ const page = () => {
     (option) => socialInputs.some((input) => input.platform === option.value)
   );
   console.log('availableoptions', selectedoptions)
-  console.table(socialInputs)
+  console.log(socialInputs)
 
 
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+  
+    try {
+      const response = await axiosInstance.post('/social/', { links: socialInputs });
+      console.log('Response:', response.data);
+    } catch (err) {
+      setError('Failed to save social links.');
+      console.error('Error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (
@@ -118,7 +136,7 @@ const page = () => {
 
 
 <div className="pagefooter">
- <button className='mybtn'>Save</button>
+ <button className='mybtn' onClick={handleSubmit}>Save</button>
 </div>
 </div>
 

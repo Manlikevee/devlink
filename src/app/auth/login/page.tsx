@@ -3,12 +3,64 @@ import Layout from '@/components/Layout'
 import Inputbox from '@/components/utility/Inputbox'
 import Pageheading from '@/components/utility/Pageheading'
 import React, { useState } from 'react'
+import { Toaster, toast } from 'sonner'
+import axios from 'axios';
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Mail, Lock } from 'lucide-react';
-
+import Cookies from 'js-cookie';
 const page = () => {
   const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
+  const [isLoading, setIsloading] = useState(false);
+
+
+  const submitLogin = async () => {
+    setIsloading(true)
+    const payload = {
+      username: email,
+      password: currentPassword
+    };
+    const url = 'https://veezitorbackend.vercel.app/token/';
+
+    console.log(payload);
+    axios.post(url, payload, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        // Successful login
+        toast.success(`Login successfully`);
+        Cookies.set('access_token', response.data.access, { expires: 14 });
+        Cookies.set('refresh_token', response.data.refresh, { expires: 14 });
+        // Save access and refresh tokens to localStorage
+        setTimeout(function() {
+            window.location.href = `/`;
+        }, 2000);
+
+        const token = response.data.access;
+        const arrayToken = token.split('.');
+        const tokenPayload = JSON.parse(atob(arrayToken[1]));
+        console.log(tokenPayload);
+        setIsloading(false)
+    })
+    .catch(error => {
+        // Failed login
+
+        toast.error(error.response ? error.response.data.message || 'Invalid Username or Password' : 'Failed to connect to server');
+        // Hide loading spinner and enable submit button
+        setIsloading(false)
+    });
+
+    // Add logic to handle the login, e.g., API call to authenticate the user
+  };
+
+
+
+
+
+
   return (
     <Layout>
 
@@ -30,17 +82,26 @@ const page = () => {
           />
      
 <Inputbox
-          inputState={email} 
-          setInputState={setEmail} 
-          label="Email" 
+          inputState={currentPassword} 
+          setInputState={setCurrentPassword} 
+          label="Password" 
           inputType="email" 
           name="email" 
           id="email" 
-          placeholder='e.g. alex@email.com'
+          placeholder='*********'
           icon = {Lock}
           />
+        {isLoading ?        
+   <button id="loadingBtn" className='loadbtn' >
 
-          <button className='mybtn'>Login</button>
+   <span className='loading-spinner'></span> 
+    </button>
+        :
+        <button id="submitBtn" onClick={submitLogin} className='mybtn'>
+        Login
+      </button> 
+         }
+
 
 </div>
 

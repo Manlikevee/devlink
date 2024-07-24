@@ -64,7 +64,7 @@ Link #{index + 1}
           name="link"
           id={`link-${index}`}
           placeholder='e.g. https://www.github.com/johnappleseed'
-          icon={Github}
+          icon={Link}
         />
 
 
