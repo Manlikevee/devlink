@@ -38,7 +38,7 @@ const Herolayout: React.FC<LayoutProps>  = ({ children }) => {
     };
   return (
     <Layout>
-<div className="container">
+<div className="container" style={divStyle}>
 
 
 <Topnav/>
