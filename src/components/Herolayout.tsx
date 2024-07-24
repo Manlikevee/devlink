@@ -11,7 +11,7 @@ interface LayoutProps {
 
 const Herolayout: React.FC<LayoutProps>  = ({ children }) => {
 
-    const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
+    const [windowHeight, setWindowHeight] = useState<number>();
 
   
     useEffect(() => {
