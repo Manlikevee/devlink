@@ -34,7 +34,7 @@ type SocialInputBoxProps = {
 
 <div className="socialheaderstart">
 <div className="sociallabelicon">
-<img src="/frame248.png" alt="" />
+<img src="/Frame248.png" alt="" />
 </div>
 Link #{index + 1}
 </div>

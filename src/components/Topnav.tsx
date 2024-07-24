@@ -5,7 +5,7 @@ const Topnav = () => {
 
     <header>
     <div className='topnav'>
-        <img src="/group251.png" alt="" />
+        <img src="/Group251.png" alt="" />
 
         <div className="navlinks"></div>
 
