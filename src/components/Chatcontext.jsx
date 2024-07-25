@@ -118,13 +118,12 @@ export const VeeContextProvider = ({ children }) => {
 
     
 
-
+      let myaccessToken = Cookies.get("access_token");
 
       const fetchuserlinks = () => {
 
-        let accessToken = Cookies.get("access_token");
-        if (accessToken ) {
-    
+      
+        if (myaccessToken ) {
         axiosInstance
           .get("/social")
           .then((response) => {
@@ -155,7 +154,11 @@ export const VeeContextProvider = ({ children }) => {
 
 
       useEffect(() => {
+        if (myaccessToken ) {
         fetchuserlinks()
+
+        }
+
       }, []);
     return (
         <VeeContext.Provider
