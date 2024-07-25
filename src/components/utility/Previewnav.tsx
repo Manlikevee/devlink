@@ -1,12 +1,12 @@
 import React from 'react'
-
+import Link from 'next/link'
 const Previewnav = () => {
   return (
     <header>
     <div className='topnav'>
-    <div className="navlink navbtn">
+    <Link href={'/'} className="navlink navbtn">
     Back to Editor
-        </div>
+        </Link>
 
         <div className="navlink navbtn previews">
         Share Link

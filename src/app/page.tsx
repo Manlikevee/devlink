@@ -24,7 +24,7 @@ const page = () => {
   const [firstName, setFirstName] = useState("John");
   const [lastName, setLastName] = useState("Doe");
   const [email, setEmail] = useState('');
-  const [avatar, setAvatar] =  useState<File | null>(null);
+  const [avatar, setAvatar] =  useState(null);
 
   const addInputBox = () => {
     setSocialInputs([...socialInputs, { platform: '', link: '' }]);
@@ -65,7 +65,7 @@ const page = () => {
     }
    
   }, [userdata]);
-  
+
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
@@ -92,7 +92,10 @@ const page = () => {
 
 <div className="preview">
   <div className="previewblock">
-    <div className="avatar"></div>
+  <div className="avatar">
+  {avatar && (<img src= {avatar|| ''} alt="" />)}
+  
+</div>
 
   <div style={{display:'flex', alignItems:'center', flexDirection:'column'}}>
   {firstName ? (<div className='pname'> {firstName + ' ' + lastName} </div>) : ( <div className="uname"></div>) }

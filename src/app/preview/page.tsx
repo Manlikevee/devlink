@@ -7,6 +7,7 @@ import Previewnav from '@/components/utility/Previewnav'
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation'
 import { toast } from 'sonner';
+import Cookies from "js-cookie";
 const options = [
   { value: 'github', label: 'GitHub', icon: <Github size={16} /> },
   { value: 'youtube', label: 'YouTube', icon: <Youtube size={16} /> },
@@ -40,21 +41,27 @@ const page = () => {
   const [avatar, setAvatar] =  useState(null);
   const [data, setData] = useState(null);
   const [error, setError] = useState<string>('');
+  const [isauth, setisauth] = useState(false);
   const searchParams = useSearchParams()
   const reference = searchParams.get('reference')
   useEffect(() => {
+    const myaccessToken = Cookies.get("access_token");
+    if (myaccessToken){
+      setisauth(true)
+    }
     if(!searchParams.has("reference")){
       if(userdata){
+        
         setIsloading(true)
         setSocialInputs(userdata?.links)
         setEmail(userdata?.email)
         setLastName(userdata?.last_name)
         setFirstName(userdata?.first_name)
         setAvatar(userdata?.avatar)
-        setIsloading(false)
+        
       }
     }
-
+    setIsloading(false)
    
   }, [userdata]);
 
@@ -102,7 +109,11 @@ const page = () => {
     <Layout>
       <div className="purplepatch">
       <div className="previewbox">
-      <Previewnav/>
+{isauth && ( <Previewnav/>)
+
+}
+ 
+
       </div>
 
 
@@ -111,13 +122,13 @@ const page = () => {
 
 <div className="devicespace">
 <div className="avatar">
-  {data && avatar && (<img src= {avatar|| ''} alt="" />)}
+  { avatar && (<img src= {avatar|| ''} alt="" />)}
   
 </div>
 
 <div style={{display:'flex', alignItems:'center', flexDirection:'column'}}>
-{data && firstName ? (<div className='pname'> {firstName + ' ' + lastName} </div>) : ( <div className="uname"></div>) }
-{data && email ? (<div className='pname'> {email} </div>) : (<div className="uemail"></div>)}
+{ firstName ? (<div className='pname'> {firstName + ' ' + lastName} </div>) : ( <div className="uname"></div>) }
+{email ? (<div className='pname'> {email} </div>) : (<div className="uemail"></div>)}
 
 </div>
 {
@@ -125,7 +136,7 @@ const page = () => {
 }
 
 {
-  isLoading  && ( <> Loadinggg....
+  isLoading  && !email && ( <> Loadinggg....
   <span className='loading-spinner'></span> 
   </>    )
 }

@@ -25,7 +25,7 @@ export const VeeContextProvider = ({ children }) => {
             throw new Error("Refresh token not found");
           }
           const response = await axios.post(
-            "https://veejobapi.vercel.app/api/token/refresh/",
+            "https://veezitorbackend.vercel.app/api/token/refresh/",
             { refresh: refreshToken }
           );
           const newAccessToken = response.data.access;

@@ -2,19 +2,29 @@ import  { useEffect, useState } from 'react';
 import React, { ReactNode } from 'react';
 import Layout from './Layout';
 import Topnav from './Topnav';
-
-
+import Cookies from "js-cookie";
+import { useRouter } from 'next/navigation';
 interface LayoutProps {
     children: ReactNode;
   }
 
 
 const Herolayout: React.FC<LayoutProps>  = ({ children }) => {
-
+     const [isauth, setisauth] = useState(false);
     const [windowHeight, setWindowHeight] = useState<number>();
-
+    const router = useRouter()
   
+
+    const handlecorp = () => {
+      router.replace('/auth/login');
+    };
+
     useEffect(() => {
+      const myaccessToken = Cookies.get("access_token");
+      if (!myaccessToken){
+        handlecorp()
+      }
+
       // Function to update the height
       const handleResize = () => {
         setWindowHeight(window.innerHeight);

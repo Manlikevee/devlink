@@ -24,7 +24,9 @@ const page = () => {
     const url = 'https://veezitorbackend.vercel.app/token/';
 
     console.log(payload);
-    axios.post(url, payload, {
+
+    if(email && currentPassword){
+      axios.post(url, payload, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -52,6 +54,11 @@ const page = () => {
         // Hide loading spinner and enable submit button
         setIsloading(false)
     });
+
+    } else{
+      toast.error('Kindly Fill All Fields')
+      setIsloading(false)
+    }
 
     // Add logic to handle the login, e.g., API call to authenticate the user
   };
