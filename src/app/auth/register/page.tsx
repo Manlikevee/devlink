@@ -27,7 +27,7 @@ const page = () => {
       setEmailError('Email is required.');
       isValid = false;
     } else {
-      setEmailError(null);
+      setEmailError('');
     }
 
     return isValid;
