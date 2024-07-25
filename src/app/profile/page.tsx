@@ -1,14 +1,11 @@
 'use client'
-import Layout from '@/components/Layout'
-import Topnav from '@/components/Topnav'
-import Emptystatesocials from '@/components/utility/Emptystatesocials'
+import { Toaster, toast } from 'sonner'
 import Pageheading from '@/components/utility/Pageheading'
-import Socialinputbox from '@/components/utility/Socialinputbox'
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Github, Youtube, Linkedin, Facebook, Codepen, ChevronRight, ImageUp } from 'lucide-react';
 import Inputbox from '@/components/utility/Inputbox'
 import Herolayout from '@/components/Herolayout'
-
+import { VeeContext } from "@/components/Chatcontext";
 
 const options = [
   { value: 'github', label: 'GitHub', icon: <Github size={16} /> },
@@ -20,13 +17,48 @@ const options = [
 
 
 const page = () => {
-    const [email, setEmail] = useState('');
   const [socialInputs, setSocialInputs] = useState<{ platform: string; link: string }[]>([]);
-
+  const { axiosInstance, userdata } = useContext(VeeContext);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [firstName, setFirstName] = useState("John");
+  const [lastName, setLastName] = useState("Doe");
+  const [email, setEmail] = useState('');
   const [image, setImage] = useState<string | null>(null);
+  const [avatar, setAvatar] =  useState<File | null>(null);
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+    const formData = new FormData();
+    formData.append("first_name", firstName);
+    formData.append("last_name", lastName);
+    formData.append("email", email);
+    if (avatar) {
+      formData.append("avatar", avatar);
+    }
+
+    try {
+      const response = await axiosInstance.post('/social/update/', formData ,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      } );
+      console.log('Response:', response.data);
+      toast.success(`Profile Updated successfully`);
+    } catch (err) {
+      setError('Failed to save social links.');
+      console.error('Error:', err);
+      toast.success(`Failed to save Profile.`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    if (file) {
+      setAvatar(file);
+    }
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -43,6 +75,20 @@ const page = () => {
     }
   };
 
+
+  useEffect(() => {
+    if(userdata){
+      setSocialInputs(userdata?.links)
+      setEmail(userdata?.email)
+      setLastName(userdata?.last_name)
+      setFirstName(userdata?.first_name)
+      setImage(userdata?.avatar)
+    }
+   
+  }, [userdata]);
+
+
+
   return (
 
 <Herolayout>
@@ -51,9 +97,14 @@ const page = () => {
 <div className="preview">
   <div className="previewblock">
     <div className="avatar"></div>
-   <div className="uname"></div>
-   <div className="uemail"></div>
-   {socialInputs.map((input, index) => (
+  <div style={{display:'flex', alignItems:'center', flexDirection:'column'}}>
+  {firstName ? (<div className='pname'> {firstName + ' ' + lastName} </div>) : ( <div className="uname"></div>) }
+  {email ? (<div className='pname'> {email} </div>) : (<div className="uemail"></div>)}
+
+  </div>
+
+   
+  {socialInputs?.map((input, index) => (
   (input.platform && input.link.trim() ) ? (
     <div className={`socialbox ${input.platform}`} key={index}>
    <span className='aic'>     
@@ -67,7 +118,7 @@ const page = () => {
     </div>
   ) : null
 ))}
-{ socialInputs.length <1 && (<>
+{ socialInputs?.length <1 && (<>
   <div className="socialbox"></div>
    <div className="socialbox"></div>
    <div className="socialbox"></div>
@@ -142,8 +193,8 @@ const page = () => {
 <div className="inputflex">
     <div className="inputlabel">First name*</div>
     <Inputbox
-          inputState={email} 
-          setInputState={setEmail} 
+          inputState={firstName} 
+          setInputState={setFirstName} 
           label="" 
           inputType="email" 
           name="email" 
@@ -156,8 +207,8 @@ const page = () => {
 <div className="inputflex">
     <div className="inputlabel">Last name*</div>
     <Inputbox
-          inputState={email} 
-          setInputState={setEmail} 
+          inputState={lastName} 
+          setInputState={setLastName} 
           label="" 
           inputType="email" 
           name="email" 
@@ -189,7 +240,7 @@ const page = () => {
 
 
 <div className="pagefooter">
- <button className='mybtn'>Save</button>
+ <button className='mybtn' onClick={handleSubmit}>Save</button>
 </div>
 </div>
 

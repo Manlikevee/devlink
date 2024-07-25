@@ -9,6 +9,7 @@ interface InputComponentProps {
   name: string;
   id: string;
   placeholder: string;
+  error?: string; // Adding error prop
   icon?: React.ComponentType<LucideProps>; // Making the icon prop optional
 }
 
@@ -20,7 +21,9 @@ const Inputbox: React.FC<InputComponentProps> = ({
   name, 
   id, 
   placeholder,
+  error ,
   icon: Icon // Renaming for clarity
+  
 }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputState(e.target.value);
@@ -43,6 +46,7 @@ const Inputbox: React.FC<InputComponentProps> = ({
           onChange={handleChange}  
         />
       </div>
+      {error && <div className="error">{error}</div>}
     </div>
   );
 }

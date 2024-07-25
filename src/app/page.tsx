@@ -2,12 +2,11 @@
 import Emptystatesocials from '@/components/utility/Emptystatesocials'
 import Pageheading from '@/components/utility/Pageheading'
 import Socialinputbox from '@/components/utility/Socialinputbox'
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Github, Youtube, Linkedin, Facebook, Codepen, ChevronRight } from 'lucide-react';
 import Herolayout from '@/components/Herolayout'
-import axios from 'axios';
 import { VeeContext } from "@/components/Chatcontext";
-
+import { Toaster, toast } from 'sonner'
 const options = [
   { value: 'github', label: 'GitHub', icon: <Github size={16} /> },
   { value: 'youtube', label: 'YouTube', icon: <Youtube size={16} /> },
@@ -18,11 +17,14 @@ const options = [
 
 
 const page = () => {
-  const { test, axiosInstance } = useContext(VeeContext);
+  const { test, axiosInstance,userdata } = useContext(VeeContext);
   const [socialInputs, setSocialInputs] = useState<{ platform: string; link: string }[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
+  const [firstName, setFirstName] = useState("John");
+  const [lastName, setLastName] = useState("Doe");
+  const [email, setEmail] = useState('');
+  const [avatar, setAvatar] =  useState<File | null>(null);
 
   const addInputBox = () => {
     setSocialInputs([...socialInputs, { platform: '', link: '' }]);
@@ -46,15 +48,24 @@ const page = () => {
   };
 
   const availableOptions = options.filter(
-    (option) => !socialInputs.some((input) => input.platform === option.value)
+    (option) => !socialInputs?.some((input) => input.platform === option.value)
   );
   const selectedoptions = options.filter(
-    (option) => socialInputs.some((input) => input.platform === option.value)
+    (option) => socialInputs?.some((input) => input.platform === option.value)
   );
-  console.log('availableoptions', selectedoptions)
-  console.log(socialInputs)
 
 
+  useEffect(() => {
+    if(userdata){
+      setSocialInputs(userdata?.links)
+      setEmail(userdata?.email)
+      setLastName(userdata?.last_name)
+      setFirstName(userdata?.first_name)
+      setAvatar(userdata?.avatar)
+    }
+   
+  }, [userdata]);
+  
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
@@ -62,8 +73,10 @@ const page = () => {
     try {
       const response = await axiosInstance.post('/social/', { links: socialInputs });
       console.log('Response:', response.data);
+      toast.success(`Social Links Updated Successfully`);
     } catch (err) {
-      setError('Failed to save social links.');
+      toast.success(`Failed to save social links.`);
+      setError('');
       console.error('Error:', err);
     } finally {
       setLoading(false);
@@ -80,9 +93,14 @@ const page = () => {
 <div className="preview">
   <div className="previewblock">
     <div className="avatar"></div>
-   <div className="uname"></div>
-   <div className="uemail"></div>
-   {socialInputs.map((input, index) => (
+
+  <div style={{display:'flex', alignItems:'center', flexDirection:'column'}}>
+  {firstName ? (<div className='pname'> {firstName + ' ' + lastName} </div>) : ( <div className="uname"></div>) }
+  {email ? (<div className='pname'> {email} </div>) : (<div className="uemail"></div>)}
+
+  </div>
+
+   {socialInputs?.map((input, index) => (
   (input.platform && input.link.trim() ) ? (
     <div className={`socialbox ${input.platform}`} key={index}>
    <span className='aic'>     
@@ -96,7 +114,7 @@ const page = () => {
     </div>
   ) : null
 ))}
-{ socialInputs.length <1 && (<>
+{ socialInputs?.length <1 && (<>
   <div className="socialbox"></div>
    <div className="socialbox"></div>
    <div className="socialbox"></div>
@@ -115,8 +133,8 @@ const page = () => {
 <div className="addbtn" onClick={addInputBox}>+ Add new link</div>
 <div className="socialblock">
 
-{socialInputs.length <1 && (<Emptystatesocials/>)}
-{socialInputs.map((input, index) => (
+{socialInputs?.length <1 && (<Emptystatesocials/>)}
+{socialInputs?.map((input, index) => (
         <Socialinputbox
           key={index}
           index={index}
@@ -136,7 +154,11 @@ const page = () => {
 
 
 <div className="pagefooter">
- <button className='mybtn' onClick={handleSubmit}>Save</button>
+  {
+    loading ? (<button className='mybtn'>    <span className='loading-spinner'></span> </button>) : ( <button className='mybtn' onClick={handleSubmit}>      Save</button>)
+  }
+
+
 </div>
 </div>
 

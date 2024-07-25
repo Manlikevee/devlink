@@ -1,5 +1,5 @@
 "use client";
-
+import { Toaster, toast } from 'sonner'
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -14,7 +14,7 @@ export const VeeContext = createContext();
 export const VeeContextProvider = ({ children }) => {
     const router = useRouter();
     const [test, setTest] = useState('sssssssssssssssssssssssaa');
-
+    const [userdata, setUserdata] = useState([])
     
 
 
@@ -120,20 +120,49 @@ export const VeeContextProvider = ({ children }) => {
 
 
 
+      const fetchuserlinks = () => {
 
+        let accessToken = Cookies.get("access_token");
+        if (accessToken ) {
+    
+        axiosInstance
+          .get("/social")
+          .then((response) => {
+            // Check if response is successful
+            if (response.status === 200) {
+              // Handle successful response
+              toast.success(`Successful links`);
+    
+              // If you want to do something with the data, you can store it or further process it here
+              setUserdata(response.data);
+              console.log(response.data.links);
+            } else {
+              toast.error(`An Error Occured`);
+              throw new Error("Network response was not ok");
+            }
+          })
+          .catch((error) => {
+            // Handle request error
+    
+            toast.error(`An Error Occured`);
+            // You can handle errors or display them as needed
+          });
+        }
+      };
 
 
 
 
 
       useEffect(() => {
-
+        fetchuserlinks()
       }, []);
     return (
         <VeeContext.Provider
           value={{
             test,
-            axiosInstance
+            axiosInstance,
+            userdata
 
           }}
         >
