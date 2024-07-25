@@ -31,6 +31,7 @@ const SocialLinkFetcher: React.FC = () => {
   const [email, setEmail] = useState<string | null>(null);
   const [avatar, setAvatar] = useState<string | null>(null);
   const [data, setData] = useState<any>(null);
+  const [userref, setuserref] = useState('');
   const [error, setError] = useState<string>('');
   const [isAuth, setIsAuth] = useState(false);
   const searchParams = useSearchParams();
@@ -49,6 +50,7 @@ const SocialLinkFetcher: React.FC = () => {
         setLastName(userdata?.last_name);
         setFirstName(userdata?.first_name);
         setAvatar(userdata?.avatar);
+        setuserref(userdata?.reference)
         setIsLoading(false);
       }
     }
@@ -90,11 +92,31 @@ const SocialLinkFetcher: React.FC = () => {
     }
   }, [reference]);
 
+
+
+  const copyToClipboard = async () => {
+    try {
+      const myref =  userref;
+  
+      // Create the text to copy
+      const textToCopy = `${window.location.protocol}//${window.location.host}/preview?reference=${myref}`;
+      
+      // Use the Clipboard API to copy the text
+      await navigator.clipboard.writeText(textToCopy);
+      toast.success('Copied To Clipboard');
+    } catch (err) {
+      toast.error('Failed to copy!');
+    }
+  
+    // Reset the message after a short delay (if needed)
+  };
+
+
   return (
     <div>
       <div className="purplepatch">
         <div className="previewbox">
-          {isAuth && <Previewnav />}
+          {isAuth && <Previewnav copy={copyToClipboard} />}
         </div>
       </div>
       <div className="devicespace">
